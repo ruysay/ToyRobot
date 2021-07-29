@@ -16,12 +16,13 @@ import com.lc.robot.controller.CommandProcessor
 import com.lc.robot.databinding.ActivityMainBinding
 import com.lc.robot.direction.DirectionEnum
 import timber.log.Timber
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private var command = ""
-    private val placeRegex = Regex("(PLACE) ([0-9]),([0-9]),(NORTH|EAST|SOUTH|WEST)")
+    private val placeRegex = Regex("(PLACE)[ \\t\\n\\x0b\\r\\f]([0-9]),([0-9]),[ \\t\\n\\x0b\\r\\f](NORTH|EAST|SOUTH|WEST)")
     private val processor = CommandProcessor()
 
     private val adapter by lazy {
@@ -46,13 +47,15 @@ class MainActivity : AppCompatActivity() {
         when(view?.id) {
             R.id.place_btn -> {
                 if(binding.placeCommand.text.isBlank()) {
-                    command = "PLACE " + binding.placeCommand.hint
+                    command = binding.placeCommand.hint as String
                 } else {
                     //TODO check
+                    command = binding.placeCommand.editableText.toString()
                     if(command.matches(placeRegex)) {
-                        command = "PLACE " + binding.placeCommand.editableText.toString()
+                        binding.placeCommand.editableText.toString()
                     } else {
-                        adapter.addLog("Error")
+                        Timber.d("checkRobot - error placing: $command")
+                        adapter.addLog("Error: incorrect command or wrong format")
                         return@OnClickListener
                     }
                 }
@@ -76,6 +79,13 @@ class MainActivity : AppCompatActivity() {
                 adapter.setLogs(listOf())
                 val placeCommands = command.substring(command.indexOf(" ")+1).split(",")
                 Timber.d("checkRobot placing - 1: $placeCommands")
+
+                val x = placeCommands[0].trim().toInt()
+                val y = placeCommands[1].trim().toInt()
+                if(x > 4 || y > 4) {
+                    adapter.addLog("Error: Out of range")
+                    return@OnClickListener
+                }
                 processor.place(DirectionEnum.valueOf(placeCommands[2].trim()), Position(placeCommands[0].toInt(), placeCommands[1].toInt()))
             }
         }
@@ -83,5 +93,6 @@ class MainActivity : AppCompatActivity() {
             Timber.d("checkRobot position: ${it.position}, ${it.facing}")
             adapter.addLog("${it.position.x} , ${it.position.y}")
         }
+        binding.logRecyclerView.scrollTo(0,20*adapter.itemCount)
     }
 }
