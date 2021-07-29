@@ -15,7 +15,7 @@ The app is a simple toy robot app in kotlin that takes commands like PLACE, MOVE
                                                       
    
 # Command Format
-Below are command format
+Below is the format check of "PLACE" command.
 
     "(PLACE)[ ]([0-9]),([0-9]),[ ](NORTH|EAST|SOUTH|WEST)"
 
