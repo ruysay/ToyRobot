@@ -1,13 +1,13 @@
-package com.lc.robot
+package com.lc.robot.ui
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import timber.log.Timber
+import com.lc.robot.R
 
-class LogsAdapter() : RecyclerView.Adapter<LogsAdapter.LogViewHolder>() {
+class LogsAdapter : RecyclerView.Adapter<LogsAdapter.LogViewHolder>() {
 
     private val logs = mutableListOf<String>()
 
@@ -19,7 +19,6 @@ class LogsAdapter() : RecyclerView.Adapter<LogsAdapter.LogViewHolder>() {
 
     fun addLog(log: String) {
         this.logs.add(log)
-        Timber.d("checkRobot - addLog: ${logs.lastIndex}, $log")
         notifyItemInserted(logs.lastIndex)
     }
 
