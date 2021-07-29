@@ -39,7 +39,7 @@ Below are command format
 	Output: error
 	Command: test
 	Output: error
-	Command: PLACE 0,4, SOUTH //There is a space between ",' after "y" and [DIRECTION]
+	Command: PLACE 0,4, SOUTH //There is a space between "," after "y" and [DIRECTION]
 	Output: 0,4
 	Command: MOVE
 	Output: 0,4

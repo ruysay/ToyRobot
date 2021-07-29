@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
                 if (binding.placeCommand.text.isBlank()) {
                     command = binding.placeCommand.hint as String
                 } else {
-                    command = binding.placeCommand.editableText.toString()
+                    command = binding.placeCommand.editableText.toString().uppercase()
                     if (command?.matches(placeRegex) == true) {
                         binding.placeCommand.editableText.toString()
                     } else {
